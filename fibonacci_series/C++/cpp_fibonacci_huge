@@ -1,0 +1,49 @@
+#include <iostream>
+#include <cassert>
+
+long long get_fibonacci_huge_naive(long long n, long long m) {
+    if (n <= 1)
+        return n;
+
+    long long previous = 0;
+    long long current  = 1;
+
+    for (long long i = 0; i < n - 1; ++i) {
+        long long tmp_previous = previous;
+        previous = current;
+        current = tmp_previous + current;
+    }
+
+    return current % m;
+}
+
+long long get_fibonacci_huge_fast(long long n, long long m) {
+    long long arr[n];
+    arr[0] = 1;
+    arr[1] = 1;
+
+    if(n<2)
+      return n;
+    
+
+    for (int i = 2; i < n; i++)
+        arr[i]= arr[i - 1] + arr[i - 2];
+
+    return arr[n-1] % m;
+}
+
+void test_solution() {
+    for (int n = 100; n < 100000; ++n) {
+      for (int m = 500; m < 1000000; ++m){
+        std::cout << "\n" << n << m << "\n";
+        std::cout << get_fibonacci_huge_fast(n, m) << get_fibonacci_huge_naive(n, m);
+        assert(get_fibonacci_huge_fast(n, m) == get_fibonacci_huge_naive(n, m));
+      }
+    }
+}
+
+int main() {
+    long long n, m;
+    std::cin >> n >> m;
+    std::cout << get_fibonacci_huge_naive(n, m) << '\n';
+}
